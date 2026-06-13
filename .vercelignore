@@ -1,0 +1,14 @@
+# AI tool files — not needed for Vercel deployment
+agent-ctx/
+tool-results/
+skills/
+examples/
+download/
+upload/
+mini-services/
+dev.log
+server.log
+worklog.md
+Caddyfile
+*.db
+*.db-journal

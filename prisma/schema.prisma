@@ -1,0 +1,172 @@
+// Dataghmart Data Bundles — Prisma Schema (SQLite)
+// Focused data bundle sales platform with agent system
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  fullName      String?
+  password      String?
+  phone         String?
+  role          String   @default("customer") // customer | agent | admin
+  avatarUrl     String?
+  balance       Float    @default(0)
+  signInCount   Int      @default(0)
+  lastSignInAt  DateTime?
+  suspended     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  orders           DataOrder[]
+  walletTxns       WalletTransaction[]
+  withdrawals      WithdrawalRequest[]
+  agentProfile     AgentProfile?
+  signInLogs       SignInLog[]
+}
+
+model AgentProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  tier            String   @default("retail") // retail | premium | super | distributor
+  kycStatus       String   @default("none")   // none | pending | approved | rejected
+  kycData         String?  // JSON
+  commissionRate  Float    @default(5) // percentage
+  apiKey          String?  @unique
+  apiEnabled      Boolean  @default(false)
+  whiteLabelName  String?
+  whiteLabelActive Boolean @default(false)
+  status          String   @default("pending") // pending | active | suspended
+  totalSales      Float    @default(0)
+  totalCommissions Float   @default(0)
+  totalReferrals  Int      @default(0)
+  badge           String?  // bronze | silver | gold | platinum
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user         User              @relation(fields: [userId], references: [id])
+  commissions  AgentCommission[]
+  referrals    Referral[]
+}
+
+model DataOrder {
+  id                  String   @id @default(cuid())
+  userId              String
+  reference           String?  @unique // DataMart order reference
+  phoneNumber         String
+  network             String   // YELLO | TELECEL | AT_PREMIUM
+  capacity            Int      // GB
+  price               Float
+  costPrice           Float    @default(0) // base cost from DataMart
+  profit              Float    @default(0) // price - costPrice
+  status              String   @default("pending") // pending | processing | completed | failed | refunded
+  paymentMethod       String?  // datamart | wallet
+  customerPhone       String?  // if agent buying for someone else
+  agentId             String?  // if ordered by agent
+  agentCommission     Float    @default(0)
+  completedAt         DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  user         User              @relation(fields: [userId], references: [id])
+  commissions AgentCommission[]
+}
+
+model WalletTransaction {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // credit | debit
+  amount      Float
+  balance     Float    // balance after transaction
+  category    String   // topup | purchase | commission | withdrawal | referral | refund
+  reference   String?
+  description String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model WithdrawalRequest {
+  id          String   @id @default(cuid())
+  userId      String
+  amount      Float
+  fee         Float    @default(0)
+  status      String   @default("pending") // pending | processing | completed | failed | refunded
+  phoneNumber String?  // MoMo number
+  network     String?  // MTN | TELECEL | AIRTELTIGO
+  reference   String?  // DataMart withdrawal reference
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model AgentCommission {
+  id        String   @id @default(cuid())
+  agentId   String
+  orderId   String
+  amount    Float
+  status    String   @default("pending") // pending | paid
+  createdAt DateTime @default(now())
+
+  agent AgentProfile @relation(fields: [agentId], references: [id])
+  order DataOrder    @relation(fields: [orderId], references: [id])
+}
+
+model Referral {
+  id            String   @id @default(cuid())
+  agentId       String
+  referredEmail String
+  referredUserId String?
+  status        String   @default("pending") // pending | registered | active
+  rewardAmount  Float    @default(0)
+  createdAt     DateTime @default(now())
+
+  agent AgentProfile @relation(fields: [agentId], references: [id])
+}
+
+model BundlePrice {
+  id                Int     @id @default(autoincrement())
+  network           String  // YELLO | TELECEL | AT_PREMIUM
+  capacity          Int     // GB
+  basePrice         Float   // cost from DataMart
+  retailPrice       Float   // customer price
+  agentRetailPrice  Float   // retail agent price
+  agentPremiumPrice Float   // premium agent price
+  agentSuperPrice   Float   // super agent price
+  distributorPrice  Float   // distributor price
+  isActive          Boolean @default(true)
+
+  @@unique([network, capacity])
+}
+
+model Setting {
+  key   String @id
+  value String
+}
+
+model Announcement {
+  id        Int       @id @default(autoincrement())
+  title     String
+  body      String?
+  startDate DateTime?
+  endDate   DateTime?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+}
+
+model SignInLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  signInAt  DateTime @default(now())
+  ip        String?
+
+  user User? @relation(fields: [userId], references: [id])
+}

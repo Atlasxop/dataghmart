@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <defs>
+    <linearGradient id="ghanaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A7B35"/>
+      <stop offset="48%" stop-color="#0A7B35"/>
+      <stop offset="52%" stop-color="#D4A017"/>
+      <stop offset="100%" stop-color="#D4A017"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background: rounded square with Ghana green/gold split -->
+  <rect x="0" y="0" width="180" height="180" rx="36" ry="36" fill="url(#ghanaGrad)"/>
+
+  <!-- Shopping bag - white silhouette -->
+  <!-- Bag body -->
+  <path d="M45 62 L45 146 Q45 158 57 158 L123 158 Q135 158 135 146 L135 62 Z" fill="white" opacity="0.95"/>
+
+  <!-- Bag handle -->
+  <path d="M68 62 V48 Q68 28 90 28 Q112 28 112 48 V62" fill="none" stroke="white" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Green band on upper bag -->
+  <path d="M45 62 L45 102 L135 102 L135 62 Z" fill="#0A7B35" opacity="0.9"/>
+
+  <!-- Gold band on lower bag -->
+  <path d="M45 102 L45 146 Q45 158 57 158 L123 158 Q135 158 135 146 L135 102 Z" fill="#D4A017" opacity="0.9"/>
+
+  <!-- "DG" text -->
+  <text x="90" y="131" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="54" fill="white" letter-spacing="-2">DG</text>
+</svg>

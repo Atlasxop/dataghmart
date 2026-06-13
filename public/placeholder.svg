@@ -1,0 +1,7 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#F3F4F6"/>
+  <path d="M80 60H120C122.652 60 125.196 61.0536 127.071 62.9289C128.946 64.8043 130 67.3478 130 70V130C130 132.652 128.946 135.196 127.071 137.071C125.196 138.946 122.652 140 120 140H80C77.3478 140 74.8043 138.946 72.9289 137.071C71.0536 135.196 70 132.652 70 130V70C70 67.3478 71.0536 64.8043 72.9289 62.9289C74.8043 61.0536 77.3478 60 80 60Z" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M95 90C97.7614 90 100 87.7614 100 85C100 82.2386 97.7614 80 95 80C92.2386 80 90 82.2386 90 85C90 87.7614 92.2386 90 95 90Z" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70 120L90 100L110 120L120 110L130 120" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="100" y="165" text-anchor="middle" fill="#9CA3AF" font-family="system-ui" font-size="14">No Image</text>
+</svg>
